@@ -1,5 +1,2 @@
-import { createContext } from "react";
-
-const AuthContext = createContext();
-
-export { AuthContext };
+export { AuthContext } from "./Context";
+export { default as CartContext, useCart } from "./CartContext";

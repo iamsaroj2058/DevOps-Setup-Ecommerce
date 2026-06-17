@@ -8,10 +8,10 @@ const cartReducer = (state, action) => {
     case "SET_CART":
       return {
         ...state,
-        items: action?.payload?.items,
-        subtotal: action?.payload?.subtotal,
-        total: action?.payload?.total,
-        itemCount: action?.payload?.itemCount,
+        items: action?.payload?.items || [],
+        subtotal: action?.payload?.subtotal || 0,
+        total: action?.payload?.total || 0,
+        itemCount: action?.payload?.itemCount || 0,
         loading: false,
       };
     case "STOP_LOADING":
@@ -26,13 +26,17 @@ const CartProvider = ({ children }) => {
     items: [],
     total: 0,
     itemCount: 0,
+    subtotal: 0,
     loading: false,
   });
 
   return (
-    <CartContext.Provider value={{ state, dispatch }}>
+    <CartContext.Provider value={{ ...state, dispatch }}>
+      {" "}
+      {/* ← Fixed: Added .Provider and spread state */}
       {children}
     </CartContext.Provider>
   );
 };
+
 export default CartProvider;

@@ -1,19 +1,23 @@
 import { useEffect } from "react";
 import { useCart } from "../context/CartContext";
 import { useAxios } from "../hooks/useAxios";
+import useAuth from "../hooks/useAuth"; // ← Uncomment this
 import Hero from "./Hero";
 import Products from "./Products";
 
 export const Home = () => {
   const { dispatch } = useCart();
-  const { auth } = useAuth();
-  const accessToken = auth?.accessToken;
+  const { auth } = useAuth(); // ← Uncomment this
+  const accessToken = auth?.accessToken; // ← Use ONLY this line (remove the null line)
 
   const { api } = useAxios();
 
   const fetchCartData = async () => {
     dispatch({ type: "START_LOADING" });
-    if (!accessToken) return;
+    if (!accessToken) {
+      dispatch({ type: "STOP_LOADING" });
+      return;
+    }
     try {
       const response = await api.get("/cart/");
       dispatch({
@@ -33,7 +37,8 @@ export const Home = () => {
 
   useEffect(() => {
     fetchCartData();
-  }, []);
+  }, [accessToken]); // ← Add accessToken as dependency
+
   return (
     <>
       <Hero />

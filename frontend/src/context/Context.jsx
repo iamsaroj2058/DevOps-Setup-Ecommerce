@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { AuthContext } from "../context/Context"; // ← Import from correct location
+import React, { createContext, useState, useEffect } from "react";
 
-const AuthProvider = ({ children }) => {
+export const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({
     user: null,
     accessToken: null,
@@ -52,7 +53,5 @@ const AuthProvider = ({ children }) => {
     isAuthenticated: !!auth.accessToken,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>; // ← Fixed: Added .Provider
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
-
-export default AuthProvider;
